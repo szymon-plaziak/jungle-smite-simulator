@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="League of Legends Jungle Smite Simulator - Practice your smite timing on Baron Nashor">
+    <meta name="keywords" content="League of Legends, LoL, Jungle, Smite, Simulator, Baron Nashor">
+    <meta name="author" content="Your Name">
+    <meta property="og:title" content="League of Legends - Jungle Smite Simulator">
+    <meta property="og:description" content="Practice your smite timing on Baron Nashor in this fun browser game">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourwebsite.com">
+    <meta property="og:image" content="https://yourwebsite.com/images/preview.jpg">
+    <title>League of Legends - Jungle Smite Simulator</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>Loading Jungle Smite Simulator...</h2>
+        </div>
+    </div>
+
+    <!-- Ad Space - Top -->
+    <div class="ad-space top-ad">
+        <div class="ad-placeholder">
+            <p>Advertisement</p>
+            <!-- Ad script will go here -->
+        </div>
+    </div>
+
+    <div class="game-container">
+        <div class="game-header">
+            <h1 class="game-title">Jungle Smite Simulator</h1>
+            <p class="game-instructions">Hover over Baron Nashor and press <span id="smiteButtonName">F</span> to smite when HP is below 1200!</p>
+        </div>
+        
+        <div class="game-area">
+            <div class="health-bar-container">
+                <div class="health-bar" id="healthBar"></div>
+                <div class="health-text" id="healthText">5000 / 5000 HP</div>
+            </div>
+            
+            <div class="monster-container" id="monsterContainer">
+                <img src="nashor.gif" alt="Baron Nashor" class="monster" id="monster">
+            </div>
+            
+            <div class="smite-effect" id="smiteEffect"></div>
+            <div class="big-damage-indicator" id="bigDamageIndicator">BIG HIT!</div>
+            <div class="threshold-warning" id="thresholdWarning">HP TOO LOW!</div>
+            
+            <div class="game-message" id="gameMessage">
+                <h2 id="messageTitle">Game Over</h2>
+                <p id="messageText">You smited at 1500 HP!</p>
+                <button id="restartButton">Play Again</button>
+                <button id="mainMenuButton">Main Menu</button>
+            </div>
+        </div>
+        
+        <div class="game-info">
+            <div class="score-display">
+                <div>Current Score: <span id="currentScore">-</span></div>
+                <div>Best Score: <span id="bestScore">-</span></div>
+                <div>Difficulty: <span id="currentDifficulty">-</span></div>
+                <div>Latency: <span id="currentLatencyDisplay">1ms</span></div>
+            </div>
+            
+            <div class="best-scores">
+                <h3>Best Scores (HP when smited)</h3>
+                <ol class="best-scores-list" id="bestScoresList">
+                    <li>No scores yet</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="smite-key">SMITE: <span id="smiteKeyDisplay">F</span></div>
+        
+        <!-- Start Screen -->
+        <div class="start-screen" id="startScreen">
+            <h1>Jungle Smite Simulator</h1>
+            
+            <div class="difficulty-buttons">
+                <button class="difficulty-button easy" id="easyButton">Easy</button>
+                <button class="difficulty-button normal" id="normalButton">Normal</button>
+                <button class="difficulty-button hard" id="hardButton">Hard</button>
+            </div>
+            
+            <div class="utility-buttons">
+                <button class="utility-button reset" id="resetScoresButton">Reset Scores</button>
+                <button class="utility-button options" id="optionsButton">Options</button>
+                <button class="utility-button help" id="helpButton">Help</button>
+            </div>
+        </div>
+        
+        <!-- Options Modal -->
+        <div class="options-modal" id="optionsModal">
+            <div class="options-content">
+                <h2>Game Options</h2>
+                
+                <div class="options-buttons">
+                    <button class="options-button" id="latencySettingsButton">Latency Settings</button>
+                    <button class="options-button" id="changeButtonButton">Change Button</button>
+                    <button class="options-button cancel" id="cancelOptionsButton">Cancel</button>
+                </div>
+                
+                <div class="current-setting">Current Latency: <span id="currentLatency">1ms</span></div>
+                <div class="current-setting">Current Button: <span id="currentButton">F</span></div>
+            </div>
+        </div>
+        
+        <!-- Latency Settings Modal -->
+        <div class="latency-modal" id="latencyModal">
+            <div class="latency-content">
+                <h2>Latency Settings</h2>
+                <p>Simulate network delay when using smite</p>
+                
+                <div class="latency-options">
+                    <div class="latency-option" data-latency="1">1ms</div>
+                    <div class="latency-option" data-latency="10">10ms</div>
+                    <div class="latency-option" data-latency="30">30ms</div>
+                    <div class="latency-option" data-latency="50">50ms</div>
+                    <div class="latency-option" data-latency="100">100ms</div>
+                </div>
+                
+                <div class="latency-buttons">
+                    <button class="options-button cancel" id="cancelLatencyButton">Cancel</button>
+                    <button class="options-button" id="saveLatencyButton">Save</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Change Button Modal -->
+        <div class="change-button-modal" id="changeButtonModal">
+            <div class="change-button-content">
+                <h2>Change Smite Button</h2>
+                <p class="button-instruction">Press any key to set it as your smite button</p>
+                <div class="button-listening" id="buttonListening">Listening for key press...</div>
+                <div class="current-button">Current Button: <span id="currentButtonDisplay">F</span></div>
+                
+                <div class="help-buttons">
+                    <button class="options-button" id="cancelChangeButtonButton">Cancel</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Help Modal -->
+        <div class="help-modal" id="helpModal">
+            <div class="help-content">
+                <h2>Game Help</h2>
+                
+                <div class="help-section">
+                    <h3>How to Play</h3>
+                    <p><strong>Objective:</strong> Successfully smite Baron Nashor when its HP is below 1200.</p>
+                    <p><strong>Controls:</strong> Hover over Baron Nashor and press a button to smite.</p>
+                    <p><strong>Scoring:</strong> The closer you smite to 1200 HP, the higher your score will be.</p>
+                    <p><strong>Failure Conditions:</strong> You will fail if you smite too early (above 1200 HP) or if you let Baron Nashor die without smiting.</p>
+                </div>
+                
+                <div class="help-section">
+                    <h3>Difficulty Specifications</h3>
+                    <ul>
+                        <li><strong>Easy:</strong> Standard gameplay with no additional mechanics</li>
+                        <li><strong>Normal:</strong> Fail if HP drops below 1000, HP drops faster when below 2000</li>
+                        <li><strong>Hard:</strong> Fail if HP drops below 1000, HP drops faster when below 2000, random big HP drops (not near 1200)</li>
+                    </ul>
+                </div>
+                
+                <div class="help-section">
+                    <h3>Tips</h3>
+                    <ul>
+                        <li>Pay attention to the health bar which shows the current HP</li>
+                        <li>In Normal and Hard modes, watch out for the HP threshold warning</li>
+                        <li>In Hard mode, be prepared for sudden big damage drops when HP is above 1400</li>
+                        <li>Adjust latency settings in Options to match your actual game experience</li>
+                        <li>Customize your smite button in Options for a more comfortable experience</li>
+                    </ul>
+                </div>
+                
+                <div class="help-buttons">
+                    <button class="options-button" id="closeHelpButton">Close</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Confirmation Message -->
+        <div class="confirmation-message" id="confirmationMessage">All scores have been reset!</div>
+    </div>
+    
+    <!-- Ad Space - Bottom -->
+    <div class="ad-space bottom-ad">
+        <div class="ad-placeholder">
+            <p>Advertisement</p>
+            <!-- Ad script will go here -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+	<footer class="game-footer">
+		<div class="footer-content">
+			<p>&copy; 2025 Jungle Smite Simulator. This game is not endorsed by or affiliated with Riot Games.</p>
+			<div class="footer-links">
+				<a href="tos.html" class="footer-link">Terms of Service</a>
+				<a href="privacy.html" class="footer-link">Privacy Policy</a>
+				<a href="mailto:fajny.ziomek69@gmail.com" class="footer-link">Contact</a>
+			</div>
+		</div>
+	</footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>
